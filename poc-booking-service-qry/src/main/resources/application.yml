@@ -10,7 +10,7 @@ spring:
         input:
           destination: bookings-events
           consumer.headerMode: headers
-          group: summary-bookings-events-1
+          group: cargo-location-summary
           content-type: application/json
       kafka:
         binder:
