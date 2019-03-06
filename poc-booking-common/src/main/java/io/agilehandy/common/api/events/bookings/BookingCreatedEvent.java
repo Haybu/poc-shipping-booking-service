@@ -46,7 +46,9 @@ public class BookingCreatedEvent extends BookingBaseEvent implements BookingEven
 		}
 
 		public BookingCreatedEvent build() {
-			eventToBuild.setOccurredOn(LocalDateTime.now());
+			if (eventToBuild.getOccurredOn() == null) {
+				eventToBuild.setOccurredOn(LocalDateTime.now());
+			}
 			eventToBuild.setType(EventTypes.BOOKING_CREATED);
 			BookingCreatedEvent eventBuilt = eventToBuild;
 			eventToBuild = new BookingCreatedEvent();
@@ -65,6 +67,11 @@ public class BookingCreatedEvent extends BookingBaseEvent implements BookingEven
 
 		public Builder setCargoRequests(List<CargoRequest> requests) {
 			eventToBuild.setCargoRequests(requests);
+			return this;
+		}
+
+		public Builder setOccurredOn(LocalDateTime date) {
+			eventToBuild.setOccurredOn(date);
 			return this;
 		}
 
