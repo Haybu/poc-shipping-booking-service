@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: bookings-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: booking_command_route
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/api/bookings/**
+            - Method=POST
+          filters:
+            - RewritePath= /api/bookings/(?<segment>.*),/command/bookings/$\{segment}
+        - id: booking_query_route
+          uri: http://localhost:8082/
+          predicates:
+            - Method=GET
+            - Path=/api/bookings/**
+          filters:
+            - RewritePath= /api/bookings/(?<segment>.*),/query/bookings/$\{segment}
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - OPTIONS
+              - HEAD
+              - PUT
+              - DELETE
+              - PATH

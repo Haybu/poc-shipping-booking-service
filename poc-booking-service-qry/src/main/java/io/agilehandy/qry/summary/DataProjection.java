@@ -19,7 +19,7 @@ package io.agilehandy.qry.summary;
 
 import io.agilehandy.common.api.events.cargos.CargoAddedEvent;
 import io.agilehandy.common.api.model.Location;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -34,7 +34,7 @@ import java.util.Optional;
 
 @Component
 @EnableBinding(Sink.class)
-@Slf4j
+@Log4j2
 public class DataProjection {
 
 	private final String HEADER_EVENT_TYPE = "event-type";

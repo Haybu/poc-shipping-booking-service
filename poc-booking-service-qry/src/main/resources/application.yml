@@ -1,7 +1,7 @@
 server:
   servlet:
-    context-path: /query
-  port: 8082
+    context-path: /query/bookings
+  port: ${PORT:8082}
 
 spring:
   cloud:

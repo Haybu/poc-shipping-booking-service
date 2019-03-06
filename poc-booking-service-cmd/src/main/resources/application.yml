@@ -1,7 +1,7 @@
 server:
   servlet:
-    context-path: /bookings
-  port: 8081
+    context-path: /command/bookings
+  port: ${PORT:8081}
 
 spring:
   application:
