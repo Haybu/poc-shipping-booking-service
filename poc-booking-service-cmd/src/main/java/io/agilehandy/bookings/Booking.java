@@ -81,7 +81,7 @@ public class Booking {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime lastUpdateDate;
 
-	// new booking
+	// new summary
 	public Booking(BookingCreateCommand cmd) {
 		// TODO: perform any invariant rules here
 		UUID bookingId = UUID.randomUUID();
@@ -95,7 +95,7 @@ public class Booking {
 		this.bookingCreated(event);
 	}
 
-	// Create booking event Handler
+	// Create summary event Handler
 	public Booking bookingCreated(BookingCreatedEvent event) {
 		this.setId(UUID.fromString(event.getBookingId()));
 		this.setStatus(BookingStatus.NEW);
@@ -107,7 +107,7 @@ public class Booking {
 		return this;
 	}
 
-	// Attaching a cargo to booking
+	// Attaching a cargo to summary
 	public void attachCargos(List<CargoRequest> requests) {
 		// create cargo command for every requested cargo by customer
 		if (requests != null && !requests.isEmpty()) {
@@ -175,7 +175,7 @@ public class Booking {
 		return this;
 	}
 
-	// patch booking with some attributes update
+	// patch summary with some attributes update
 	public boolean updateBooking(BookingPatchCommand cmd) {
 		// TODO: any business invariant checks go here
 		BookingPatchEvent event =
@@ -197,7 +197,7 @@ public class Booking {
 								FieldUtils.writeField(this, entry.getKey()
 										, entry.getValue(), true);
 							} catch (IllegalAccessException ex) {
-								log.debug("cannot update booking!", ex);
+								log.debug("cannot update summary!", ex);
 							}
 						});
 		return this;

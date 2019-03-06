@@ -1,0 +1,17 @@
+server:
+  servlet:
+    context-path: /query
+  port: 8082
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: bookings-events
+          consumer.headerMode: headers
+          group: summary-bookings-events-1
+          content-type: application/json
+      kafka:
+        binder:
+          headers: event_type,kafka_messageKey

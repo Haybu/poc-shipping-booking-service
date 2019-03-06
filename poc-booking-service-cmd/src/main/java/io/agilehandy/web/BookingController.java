@@ -45,7 +45,9 @@ public class BookingController {
 	@PostMapping
 	public String createBooking(@RequestBody BookingCreateCommand cmd) {
 		// temporary assign a random customer id. this should come with the request.
-		cmd.setCustomerId(UUID.randomUUID().toString());
+		if (cmd.getCustomerId() == null) {
+			cmd.setCustomerId(UUID.randomUUID().toString());
+		}
 		return service.createBooking(cmd);
 	}
 

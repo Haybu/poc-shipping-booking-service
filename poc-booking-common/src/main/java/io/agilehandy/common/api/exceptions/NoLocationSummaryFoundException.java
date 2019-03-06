@@ -21,8 +21,8 @@ package io.agilehandy.common.api.exceptions;
  * @author Haytham Mohamed
  **/
 
-public class RouteNotFoundException extends BaseException {
-	public RouteNotFoundException(String message) {
+public class NoLocationSummaryFoundException extends BaseException {
+	public NoLocationSummaryFoundException(String message) {
 		super(message);
 	}
 }

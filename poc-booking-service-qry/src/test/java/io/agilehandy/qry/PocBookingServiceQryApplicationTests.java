@@ -1,4 +1,4 @@
-package io.agilehandy.pocbookingserviceqry;
+package io.agilehandy.qry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

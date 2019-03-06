@@ -15,14 +15,19 @@
  */
 
 
-package io.agilehandy.common.api.exceptions;
+package io.agilehandy.qry.summary;
+
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Optional;
 
 /**
  * @author Haytham Mohamed
  **/
 
-public class LegNotFoundException extends BaseException {
-	public LegNotFoundException(String message) {
-		super(message);
-	}
+public interface LocationSummaryRepository extends CrudRepository<LocationSummary, String> {
+
+	public Optional<LocationSummary> findByZoneAndFacility(String zone, String facility);
+
+
 }

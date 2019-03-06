@@ -43,7 +43,7 @@ public class BookingService {
 		this.repository = repository;
 	}
 
-	// create booking and associated requested cargos
+	// create summary and associated requested cargos
 	public String createBooking(BookingCreateCommand cmd) {
 		Booking booking = new Booking(cmd);
 		// attach requested cargos
@@ -56,13 +56,11 @@ public class BookingService {
 		if (cmd.getData().containsKey(Booking.STATUS_FIELD_NAME)) { // status change
 			return changeBookingStatus(cmd);
 		}
-
 		return updateStatusAttributes(cmd);
-
 	}
 
 	private boolean updateStatusAttributes(BookingPatchCommand cmd) {
-		// TODO: booking to change attributes in cmd data bag.
+		// TODO: summary to change attributes in cmd data bag.
 		return true;
 	}
 
