@@ -45,7 +45,7 @@ public class BookingPatchEvent extends BookingBaseEvent implements BookingEvent 
 
 		public BookingPatchEvent build() {
 			eventToBuild.setOccurredOn(LocalDateTime.now());
-			eventToBuild.setType(EventTypes.BOOKING_STATUS_CHANGED);
+			eventToBuild.setType(EventTypes.BOOKING_UPDATED);
 			BookingPatchEvent eventBuilt = eventToBuild;
 			eventToBuild = new BookingPatchEvent();
 			return eventBuilt;

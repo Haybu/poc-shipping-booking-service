@@ -21,15 +21,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.agilehandy.cargos.Cargo;
 import io.agilehandy.cargos.CargoAddCommand;
 import io.agilehandy.common.api.events.BookingEvent;
-import io.agilehandy.common.api.events.bookings.BookingStatusChangedEvent;
 import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
+import io.agilehandy.common.api.events.bookings.BookingPatchEvent;
+import io.agilehandy.common.api.events.bookings.BookingStatusChangedEvent;
 import io.agilehandy.common.api.events.cargos.CargoAddedEvent;
 import io.agilehandy.common.api.exceptions.CargoNotFoundException;
 import io.agilehandy.common.api.model.BookingStatus;
 import io.agilehandy.common.api.model.CargoRequest;
 import javaslang.API;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,7 +50,10 @@ import static javaslang.Predicates.*;
 
 @Data
 @Slf4j
+@NoArgsConstructor
 public class Booking {
+
+	public static final String STATUS_FIELD_NAME = "status";
 
 	@JsonIgnore
 	private List<BookingEvent> cache = new ArrayList<>();
@@ -63,10 +69,6 @@ public class Booking {
 	private LocalDateTime statusDate;
 
 	private LocalDateTime lastUpdateDate;
-
-	public static final String STATUS_FIELD_NAME = "status";
-
-	public Booking() {}
 
 	// new booking
 	public Booking(BookingCreateCommand cmd) {
@@ -143,7 +145,7 @@ public class Booking {
 
 	// change status
 	public void changeStatus(BookingChangeStatusCommand cmd) {
-		// TODO: any business invariant checks
+		// TODO: any business invariant checks go here
 		BookingStatusChangedEvent event =
 				new BookingStatusChangedEvent.Builder()
 				.setBookingId(this.getId().toString())
@@ -162,6 +164,33 @@ public class Booking {
 		return this;
 	}
 
+	// patch booking with some attributes update
+	public boolean updateBooking(BookingPatchCommand cmd) {
+		// TODO: any business invariant checks go here
+		BookingPatchEvent event =
+				new BookingPatchEvent.Builder()
+				.setBookingId(cmd.getBookingId())
+				.setData(cmd.getData())
+				.build();
+		this.BookingUpdated(event);
+		return true;
+	}
+
+	// path an update event handler
+	private Booking BookingUpdated(BookingPatchEvent event)  {
+		this.setLastUpdateDate(event.getOccurredOn());
+		event.getData().entrySet().stream()
+				.forEach(entry ->
+						{
+							try {
+								FieldUtils.writeField(this, entry.getKey()
+										, entry.getValue(), true);
+							} catch (IllegalAccessException ex) {
+								log.debug("cannot update booking!", ex);
+							}
+						});
+		return this;
+	}
 
 	// Event Sourcing Handler (When replaying)
 	public Booking handleEvent(BookingEvent event) {
