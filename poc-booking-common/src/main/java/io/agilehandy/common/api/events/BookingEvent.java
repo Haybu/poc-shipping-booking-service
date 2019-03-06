@@ -20,9 +20,9 @@ package io.agilehandy.common.api.events;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
+import io.agilehandy.common.api.events.bookings.BookingPatchEvent;
+import io.agilehandy.common.api.events.bookings.BookingStatusChangedEvent;
 import io.agilehandy.common.api.events.cargos.CargoAddedEvent;
-import io.agilehandy.common.api.legs.LegAddedEvent;
-import io.agilehandy.common.api.routes.RouteAddedEvent;
 
 /**
  * @author Haytham Mohamed
@@ -34,9 +34,9 @@ import io.agilehandy.common.api.routes.RouteAddedEvent;
 		property = "type")
 @JsonSubTypes({
 		@JsonSubTypes.Type(name = "BOOKING_CREATED", value = BookingCreatedEvent.class),
-		@JsonSubTypes.Type(name = "CARGO_ADDED", value = CargoAddedEvent.class),
-		@JsonSubTypes.Type(name = "ROUTE_ADDED", value = RouteAddedEvent.class),
-		@JsonSubTypes.Type(name = "LEG_ADDED", value = LegAddedEvent.class)
+		@JsonSubTypes.Type(name = "BOOKING_STATUS_CHANGED", value = BookingStatusChangedEvent.class),
+		@JsonSubTypes.Type(name = "BOOKING_UPDATED", value = BookingPatchEvent.class),
+		@JsonSubTypes.Type(name = "CARGO_ADDED", value = CargoAddedEvent.class)
 })
 
 public interface BookingEvent {
