@@ -40,7 +40,7 @@ public class CargoController {
 		this.service = service;
 	}
 
-	@PostMapping("/patch/cargos")
+	@PostMapping("/{bookingId}/cargos")
 	public String addCargo(@RequestBody CargoAddCommand cmd) {
 		return service.addCargo(cmd);
 	}

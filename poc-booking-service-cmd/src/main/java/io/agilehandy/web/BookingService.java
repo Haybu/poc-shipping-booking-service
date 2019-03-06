@@ -18,10 +18,13 @@
 package io.agilehandy.web;
 
 import io.agilehandy.bookings.Booking;
+import io.agilehandy.bookings.BookingChangeStatusCommand;
 import io.agilehandy.bookings.BookingCreateCommand;
+import io.agilehandy.bookings.BookingPatchCommand;
 import io.agilehandy.cargos.Cargo;
 import io.agilehandy.cargos.CargoAddCommand;
 import io.agilehandy.common.api.exceptions.BookingNotFoundException;
+import io.agilehandy.common.api.model.BookingStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,12 +43,39 @@ public class BookingService {
 		this.repository = repository;
 	}
 
+	// create booking and associated requested cargos
 	public String createBooking(BookingCreateCommand cmd) {
-		// create booking and associated requested cargos
 		Booking booking = new Booking(cmd);
+		// attach requested cargos
+		booking.attachCargos(cmd.getCargoRequests());
 		repository.save(booking);
-
 		return booking.getId().toString();
+	}
+
+	public boolean patchBooking(BookingPatchCommand cmd) {
+		if (cmd.getData().containsKey(Booking.STATUS_FIELD_NAME)) { // status change
+			return changeBookingStatus(cmd);
+		}
+
+		return updateStatusAttributes(cmd);
+
+	}
+
+	private boolean updateStatusAttributes(BookingPatchCommand cmd) {
+		// TODO: booking to change attributes in cmd data bag.
+		return true;
+	}
+
+	private boolean changeBookingStatus(BookingPatchCommand cmd) {
+		Booking booking = repository.findById(cmd.getBookingId());
+		BookingChangeStatusCommand statusChangeCommand =
+				new BookingChangeStatusCommand.Builder()
+						.setBookingId(cmd.getBookingId())
+						.setStatus(BookingStatus
+								.fromValue((String)cmd.getData().get(Booking.STATUS_FIELD_NAME)))
+						.build();
+		booking.changeStatus(statusChangeCommand);
+		return true;
 	}
 
 	public Booking getBookingById(String bookingId) {

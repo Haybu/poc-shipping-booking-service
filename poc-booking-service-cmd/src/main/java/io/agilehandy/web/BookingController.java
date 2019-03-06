@@ -17,9 +17,11 @@
 
 package io.agilehandy.web;
 
-import io.agilehandy.bookings.BookingCreateCommand;
 import io.agilehandy.bookings.Booking;
+import io.agilehandy.bookings.BookingCreateCommand;
+import io.agilehandy.bookings.BookingPatchCommand;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,7 @@ public class BookingController {
 
 	@PostMapping
 	public String createBooking(@RequestBody BookingCreateCommand cmd) {
-		// temporary assign a random customer id
+		// temporary assign a random customer id. this should come with the request.
 		cmd.setCustomerId(UUID.randomUUID().toString());
 		return service.createBooking(cmd);
 	}
@@ -50,5 +52,11 @@ public class BookingController {
 	@GetMapping("/{id}")
 	public Booking getBooking(@PathVariable String id) {
 		return service.getBookingById(id);
+	}
+
+	@PatchMapping("/{id}")
+	public boolean pathBookingStatus(@PathVariable String id,
+	                                @RequestBody BookingPatchCommand cmd) {
+		return service.patchBooking(cmd);
 	}
 }

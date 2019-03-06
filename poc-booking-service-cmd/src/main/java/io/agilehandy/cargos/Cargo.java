@@ -72,12 +72,18 @@ public class Cargo {
 
 	public void cargoAdded(CargoAddedEvent event) {
 		this.setId(UUID.fromString(event.getCargoId()));
+		this.setStatus(CargoStatus.NEW);
+		this.setStatusDate(event.getOccurredOn());
 		this.setBookingId(UUID.fromString(event.getBookingId()));
 		this.setNature(event.getNature());
 		this.setRequiredSize(event.getRequiredSize());
 		this.setCutOffDate(event.getCutOffDate());
 		this.setOrigin(event.getOrigin());
 		this.setDestination(event.getDestination());
+	}
+
+	public void changeStatus(CargoChangeStatusCommand cmd) {
+
 	}
 
 	public void routeAssigned(CargoRouteAssignedEvent event) {

@@ -26,6 +26,7 @@ import io.agilehandy.common.api.model.CargoNature;
 import io.agilehandy.common.api.model.ContainerSize;
 import io.agilehandy.common.api.model.Location;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -35,14 +36,10 @@ import java.time.LocalDateTime;
  **/
 
 @Data
+@NoArgsConstructor
 public class CargoAddCommand implements Serializable {
 
 	private String bookingId;
-
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime occurredOn;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -54,10 +51,6 @@ public class CargoAddCommand implements Serializable {
 
 	private CargoNature nature;
 	private ContainerSize requiredSize;
-
-	public CargoAddCommand() {
-		this.occurredOn = LocalDateTime.now();
-	}
 
 	public static class Builder {
 		private CargoAddCommand commandToBuild;

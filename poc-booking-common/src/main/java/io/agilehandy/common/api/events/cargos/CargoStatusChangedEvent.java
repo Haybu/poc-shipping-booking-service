@@ -36,27 +36,27 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class CargoRouteAssignedEvent extends CargoBaseEvent implements BookingEvent {
+public class CargoStatusChangedEvent extends CargoBaseEvent implements BookingEvent {
 
-	private String routeId;
+	private String status;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime routeAssignDate;
+	private LocalDateTime statusDate;
 
 	public static class Builder {
-		private CargoRouteAssignedEvent eventToBuild;
+		private CargoStatusChangedEvent eventToBuild;
 
 		public Builder() {
-			eventToBuild = new CargoRouteAssignedEvent();
+			eventToBuild = new CargoStatusChangedEvent();
 		}
 
-		public CargoRouteAssignedEvent build() {
+		public CargoStatusChangedEvent build() {
 			eventToBuild.setOccurredOn(LocalDateTime.now());
-			eventToBuild.setType(EventTypes.CARGO_ROUTE_ASSIGNED);
-			CargoRouteAssignedEvent eventBuilt = eventToBuild;
-			eventToBuild = new CargoRouteAssignedEvent();
+			eventToBuild.setType(EventTypes.BOOKING_CREATED);
+			CargoStatusChangedEvent eventBuilt = eventToBuild;
+			eventToBuild = new CargoStatusChangedEvent();
 			return eventBuilt;
 		}
 
@@ -70,14 +70,15 @@ public class CargoRouteAssignedEvent extends CargoBaseEvent implements BookingEv
 			return this;
 		}
 
-		public Builder setRouteId(String routeId) {
-			eventToBuild.setRouteId(routeId);
+		public Builder setStatus(String status) {
+			eventToBuild.setStatus(status);
 			return this;
 		}
 
-		public Builder setRouteAssignDate(LocalDateTime date) {
-			eventToBuild.setRouteAssignDate(date);
+		public Builder setStatusDate(LocalDateTime statusDate) {
+			eventToBuild.setStatusDate(statusDate);
 			return this;
 		}
 	}
+
 }

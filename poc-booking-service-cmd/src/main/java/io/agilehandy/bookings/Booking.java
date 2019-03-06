@@ -18,26 +18,22 @@
 package io.agilehandy.bookings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.agilehandy.common.api.events.BookingEvent;
-import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
+import io.agilehandy.cargos.Cargo;
 import io.agilehandy.cargos.CargoAddCommand;
+import io.agilehandy.common.api.events.BookingEvent;
+import io.agilehandy.common.api.events.bookings.BookingStatusChangedEvent;
+import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
 import io.agilehandy.common.api.events.cargos.CargoAddedEvent;
 import io.agilehandy.common.api.exceptions.CargoNotFoundException;
 import io.agilehandy.common.api.model.BookingStatus;
 import io.agilehandy.common.api.model.CargoRequest;
-import io.agilehandy.common.api.model.Location;
-import io.agilehandy.common.api.model.RouteLeg;
-import io.agilehandy.common.api.model.TransportationType;
-import io.agilehandy.cargos.Cargo;
 import javaslang.API;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import static javaslang.API.*;
@@ -66,9 +62,13 @@ public class Booking {
 
 	private LocalDateTime statusDate;
 
+	private LocalDateTime lastUpdateDate;
+
+	public static final String STATUS_FIELD_NAME = "status";
+
 	public Booking() {}
 
-	// Command Handler
+	// new booking
 	public Booking(BookingCreateCommand cmd) {
 		// TODO: perform any invariant rules here
 		UUID bookingId = UUID.randomUUID();
@@ -80,12 +80,22 @@ public class Booking {
 				.build();
 
 		this.bookingCreated(event);
-
-		// attach requested cargos
-		this.attachCargos(cmd.getCargoRequests());
 	}
 
-	private void attachCargos(List<CargoRequest> requests) {
+	// Create booking event Handler
+	public Booking bookingCreated(BookingCreatedEvent event) {
+		this.setId(UUID.fromString(event.getBookingId()));
+		this.setStatus(BookingStatus.NEW);
+		this.setStatusDate(event.getOccurredOn());
+		this.setLastUpdateDate(event.getOccurredOn());
+		this.setCustomerId(UUID.fromString(event.getCustomerId()));
+		this.setCargoList(new ArrayList<>());
+		this.cacheEvent(event);
+		return this;
+	}
+
+	// Attaching a cargo to booking
+	public void attachCargos(List<CargoRequest> requests) {
 		// create cargo command for every requested cargo by customer
 		if (requests != null && !requests.isEmpty()) {
 			requests.stream().forEach(cargoRequest -> {
@@ -103,16 +113,7 @@ public class Booking {
 		}
 	}
 
-	// EVENT SOURCE HANDLER
-	public Booking bookingCreated(BookingCreatedEvent event) {
-		this.setId(UUID.fromString(event.getBookingId()));
-		this.setCustomerId(UUID.fromString(event.getCustomerId()));
-		this.setCargoList(new ArrayList<>());
-		this.cacheEvent(event);
-		return this;
-	}
-
-	// Command Handler
+	// Add cargo
 	public UUID addCargo(CargoAddCommand cmd) {
 		// TODO: perform any invariant rules here
 		UUID cargoId = UUID.randomUUID();
@@ -130,44 +131,39 @@ public class Booking {
 		return cargoId;
 	}
 
-	// EVENT SOURCE HANDLER
+	// Add cargo event Handler
 	public Booking cargoAdded(CargoAddedEvent event) {
 		Cargo cargo = this.cargoMember(UUID.fromString(event.getCargoId()));
 		cargo.cargoAdded(event);
+		this.setLastUpdateDate(event.getOccurredOn());
 		this.getCargoList().add(cargo);
 		this.cacheEvent(event);
 		return this;
 	}
 
-	private List<RouteLeg> findRouteLegs(Location origin, Location destination) {
-		// TODO: call external service to get legs for a route
-		// for this demo generate random route legs
-		int numberOfLegs = 0;
-		int min = 2;
-		int max = 4;
-		List<TransportationType> transTypes = Arrays.asList(TransportationType.TRUCK,
-				TransportationType.VESSEL);
-		List<RouteLeg> legs = new ArrayList<>();
-		do {
-			Location startLocation = new Location(
-					"zone-" + new Random().nextInt(20)
-					, "facility-" + new Random().nextInt(20));
-			Location endLocation = new Location(
-					"zone-" + new Random().nextInt(20)
-					, "facility-" + new Random().nextInt(20));
+	// change status
+	public void changeStatus(BookingChangeStatusCommand cmd) {
+		// TODO: any business invariant checks
+		BookingStatusChangedEvent event =
+				new BookingStatusChangedEvent.Builder()
+				.setBookingId(this.getId().toString())
+				.setStatus(cmd.getStatus().getValue())
+				.build()
+				;
 
-			RouteLeg leg =
-					new RouteLeg(startLocation, endLocation
-							, transTypes.get(new Random().nextInt(transTypes.size())));
-			legs.add(leg);
-
-			numberOfLegs++;
-		} while (numberOfLegs > (new Random().nextInt((max - min) + 1) + min));
-
-		return legs;
+		this.statusChanged(event);
 	}
 
-	// Replaying Event Sourcing Handler
+	// Change status event handler
+	public Booking statusChanged(BookingStatusChangedEvent event) {
+		setStatus(BookingStatus.fromValue(event.getStatus()));
+		setStatusDate(event.getOccurredOn());
+		setLastUpdateDate(event.getOccurredOn());
+		return this;
+	}
+
+
+	// Event Sourcing Handler (When replaying)
 	public Booking handleEvent(BookingEvent event) {
 		return API.Match(event).of(
 				Case( $( instanceOf( BookingCreatedEvent.class ) ), this::bookingCreated)
