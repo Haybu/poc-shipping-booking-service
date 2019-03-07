@@ -115,7 +115,16 @@ the JSON payload below.
 }
 ```
 
+## Common Cloud Services
 
+Checkout out branch feature/common-cloud-services of this project
+
+Clone these services from the other Github [repo] (https://github.com/Haybu/poc-cloud-common-service)
+and run both the config and Eureka servers.
+
+Cloud config server is used to externalize services configurations.
+
+Cloud Eureka is used for services registration and discovery.
 
 
 
