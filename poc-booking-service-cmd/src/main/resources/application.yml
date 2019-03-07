@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: Booking_service_command
+    name: bookings_service_command
   cloud:
     stream:
       bindings:

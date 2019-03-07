@@ -4,6 +4,8 @@ server:
   port: ${PORT:8082}
 
 spring:
+  application:
+    name: bookings-service-query
   cloud:
     stream:
       bindings:

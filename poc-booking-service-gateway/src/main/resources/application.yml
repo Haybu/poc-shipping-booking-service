@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: bookings-gateway
+    name: bookings-service-gateway
   cloud:
     gateway:
       routes:
