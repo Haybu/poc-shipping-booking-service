@@ -17,6 +17,7 @@
 
 package io.agilehandy.qry.summary;
 
+import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
 import io.agilehandy.common.api.events.cargos.CargoAddedEvent;
 import io.agilehandy.common.api.model.Location;
 import lombok.extern.log4j.Log4j2;
@@ -37,10 +38,7 @@ import java.util.Optional;
 @Log4j2
 public class DataProjection {
 
-	private final String HEADER_EVENT_TYPE = "event-type";
-
 	private final LocationSummaryRepository locationSummaryRepository;
-
 
 	public DataProjection(LocationSummaryRepository repository) {
 
@@ -49,7 +47,7 @@ public class DataProjection {
 
 	@StreamListener(target = Sink.INPUT,
 			condition = "headers['event_type']=='CARGO_ADDED'")
-	public void createSummaryProjection(@Payload CargoAddedEvent event) {
+	public void createCargoSummaryProjection(@Payload CargoAddedEvent event) {
 		log.info("projecting a summary of number of cargos in/out from/to facilities");
 		Location origin = event.getOrigin();
 		Location dest = event.getDestination();
@@ -72,4 +70,11 @@ public class DataProjection {
 		summaryIn.getRequestIn().incrementAndGet();
 		locationSummaryRepository.save(summaryIn);
 	}
+
+	@StreamListener(target = Sink.INPUT,
+			condition = "headers['event_type']=='BOOKING_CREATED'")
+	public void createBookingSummaryProjection(@Payload BookingCreatedEvent event) {
+		// TODO:
+	}
+
 }
