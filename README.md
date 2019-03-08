@@ -42,6 +42,12 @@ in a KTable to source it by the command service.
 
 ![achitecture-diagram](./images/architecture-cqrs-1.png)  
 
+Interaction with the service is happening through an API gateway that routes to appropriate underneath
+command or query service based on some routing rules. The service interacts with other services
+in the system via a message broker (Kafka in this case).
+
+![booking service architecture](./images/oocl-booking-service-architecture.png)
+
 ## Project Modules
 
 This repository consists of these modules
