@@ -17,17 +17,16 @@
 
 package io.agilehandy.web;
 
-import io.agilehandy.bookings.Booking;
+import java.util.UUID;
+
 import io.agilehandy.bookings.BookingCreateCommand;
 import io.agilehandy.bookings.BookingPatchCommand;
-import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 /**
  * @author Haytham Mohamed
@@ -51,10 +50,10 @@ public class BookingController {
 		return service.createBooking(cmd);
 	}
 
-	@GetMapping("/{id}")
+	/*@GetMapping("/{id}")  // this GET, should not be here.
 	public Booking getBooking(@PathVariable String id) {
 		return service.getBookingById(id);
-	}
+	}*/
 
 	@PatchMapping("/{id}")
 	public boolean pathBookingStatus(@PathVariable String id,

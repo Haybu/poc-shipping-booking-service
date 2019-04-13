@@ -18,14 +18,10 @@
 package io.agilehandy.web;
 
 import io.agilehandy.cargos.CargoAddCommand;
-import io.agilehandy.cargos.Cargo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author Haytham Mohamed
@@ -45,13 +41,15 @@ public class CargoController {
 		return service.addCargo(cmd);
 	}
 
-    @GetMapping("/{bookingId}/cargos/{cargoId}")
+	// this is a GET, should not be here
+   /* @GetMapping("/{bookingId}/cargos/{cargoId}")
 	public Cargo getCargo(@PathVariable String bookingId, @PathVariable String cargoId) {
 		return service.getCargo(bookingId, cargoId);
-	}
+	}*/
 
-	@GetMapping("/{bookingId}/cargos")
+	// this is a GET, should not be here
+	/*@GetMapping("/{bookingId}/cargos")
 	public List<Cargo> getCargos(@PathVariable String bookingId) {
 		return service.getCargos(bookingId);
-	}
+	}*/
 }
