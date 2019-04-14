@@ -61,9 +61,6 @@ public class BookingEventPubSub {
 				.setHeader(KafkaHeaders.MESSAGE_KEY, event.getBookingId().getBytes())
 				.setHeader(HEADER_EVENT_TYPE, event.getType())
 				.build();
-		log.info("Publishing message: " + message.getPayload());
-		log.info("With headers: ");
-		message.getHeaders().entrySet().stream().forEach(e -> log.info(e.getKey() + " : " + e.getValue()));
 		channels.output().send(message);
 	}
 
