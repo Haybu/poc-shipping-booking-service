@@ -8,14 +8,14 @@ spring:
     gateway:
       routes:
         - id: booking_command_route
-          uri: http://localhost:8081/
+          uri: http://localhost:8085/
           predicates:
             - Path=/api/bookings/**
             - Method=POST
           filters:
             - RewritePath= /api/bookings/(?<segment>.*),/command/bookings/$\{segment}
         - id: booking_query_route
-          uri: http://localhost:8082/
+          uri: http://localhost:8086/
           predicates:
             - Method=GET
             - Path=/api/bookings/**
