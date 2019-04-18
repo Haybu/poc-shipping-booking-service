@@ -17,13 +17,13 @@
 
 package io.agilehandy.common.api.events.bookings;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.EventTypes;
 import lombok.Data;
+import org.joda.time.LocalDateTime;
 
 /**
  * @author Haytham Mohamed

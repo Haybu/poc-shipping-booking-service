@@ -17,22 +17,25 @@
 
 package io.agilehandy.messages;
 
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
 import io.agilehandy.PocBookingServiceCmdApplication;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
 import io.agilehandy.common.api.model.CargoRequest;
 import io.agilehandy.pubsub.BookingEventPubSub;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.verifier.messaging.MessageVerifier;
 import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Haytham Mohamed
@@ -64,7 +67,9 @@ public class BookingBase {
 				.setRequiredSize(null)
 				.build();
 
-		LocalDateTime dt = LocalDateTime.of(2010, 10, 10, 10,10, 10);
+		DateTime date = DateTime.parse("10/10/2010 10:10:10",
+				DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss"));
+		LocalDateTime dt = date.toLocalDateTime();
 		BookingEvent event = new BookingCreatedEvent.Builder()
 				.setOccurredOn(dt)
 				.setBookingId("123456789")

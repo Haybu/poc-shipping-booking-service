@@ -17,12 +17,14 @@
 
 package io.agilehandy.cargos;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.joda.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateTimeSerializer;
 import io.agilehandy.common.api.events.cargos.CargoAddedEvent;
 import io.agilehandy.common.api.events.cargos.CargoRouteAssignedEvent;
 import io.agilehandy.common.api.model.CargoNature;
@@ -31,9 +33,7 @@ import io.agilehandy.common.api.model.ContainerSize;
 import io.agilehandy.common.api.model.Location;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
+import org.joda.time.LocalDateTime;
 
 /**
  * @author Haytham Mohamed

@@ -17,7 +17,7 @@
 
 package io.agilehandy.common.api.events.bookings;
 
-import java.time.LocalDateTime;
+import org.joda.time.LocalDateTime;
 
 import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
