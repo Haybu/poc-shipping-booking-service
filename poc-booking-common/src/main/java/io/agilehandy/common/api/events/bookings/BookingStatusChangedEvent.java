@@ -17,23 +17,23 @@
 
 package io.agilehandy.common.api.events.bookings;
 
+import java.time.LocalDateTime;
+
 import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.EventTypes;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * @author Haytham Mohamed
  **/
 
 @Data
-@NoArgsConstructor
 public class BookingStatusChangedEvent extends BookingBaseEvent implements BookingEvent {
 
 	private String status;
+
+	public BookingStatusChangedEvent(){}
 
 	public static class Builder {
 		private BookingStatusChangedEvent eventToBuild;

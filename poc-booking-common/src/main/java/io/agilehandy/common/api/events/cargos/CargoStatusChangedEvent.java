@@ -17,6 +17,8 @@
 
 package io.agilehandy.common.api.events.cargos;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -26,16 +28,12 @@ import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.CargoBaseEvent;
 import io.agilehandy.common.api.events.EventTypes;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * @author Haytham Mohamed
  **/
 
 @Data
-@NoArgsConstructor
 public class CargoStatusChangedEvent extends CargoBaseEvent implements BookingEvent {
 
 	private String status;
@@ -44,6 +42,8 @@ public class CargoStatusChangedEvent extends CargoBaseEvent implements BookingEv
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime statusDate;
+
+	public CargoStatusChangedEvent(){}
 
 	public static class Builder {
 		private CargoStatusChangedEvent eventToBuild;

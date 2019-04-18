@@ -17,6 +17,11 @@
 
 package io.agilehandy.bookings;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -25,6 +30,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.agilehandy.cargos.Cargo;
 import io.agilehandy.cargos.CargoAddCommand;
+import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.bookings.BookingCreatedEvent;
 import io.agilehandy.common.api.events.bookings.BookingPatchEvent;
@@ -39,13 +45,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static javaslang.API.*;
-import static javaslang.Predicates.*;
+import static javaslang.API.$;
+import static javaslang.API.Case;
+import static javaslang.Predicates.instanceOf;
 
 /**
  * @author Haytham Mohamed
@@ -204,7 +206,7 @@ public class Booking {
 	}
 
 	// Event Sourcing Handler (When replaying)
-	public Booking handleEvent(BookingEvent event) {
+	public Booking handleEvent(BookingBaseEvent event) {
 		return API.Match(event).of(
 				Case( $( instanceOf( BookingCreatedEvent.class ) ), this::bookingCreated)
 				, Case( $( instanceOf( CargoAddedEvent.class ) ), this::cargoAdded)

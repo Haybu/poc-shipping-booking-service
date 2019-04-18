@@ -17,24 +17,24 @@
 
 package io.agilehandy.common.api.events.bookings;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
 import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.EventTypes;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * @author Haytham Mohamed
  **/
 
 @Data
-@NoArgsConstructor
 public class BookingPatchEvent extends BookingBaseEvent implements BookingEvent {
 
 	private Map<String, Object> data;
+
+	public BookingPatchEvent(){}
 
 	public static class Builder {
 		private BookingPatchEvent eventToBuild;

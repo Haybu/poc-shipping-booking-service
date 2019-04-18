@@ -17,26 +17,26 @@
 
 package io.agilehandy.common.api.events.bookings;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.common.api.events.EventTypes;
 import io.agilehandy.common.api.model.CargoRequest;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author Haytham Mohamed
  **/
 
 @Data
-@NoArgsConstructor
 public class BookingCreatedEvent extends BookingBaseEvent implements BookingEvent {
 
 	private String customerId;
 	private List<CargoRequest> cargoRequests;
+
+	public BookingCreatedEvent() {}
 
 	public static class Builder {
 		private BookingCreatedEvent eventToBuild;

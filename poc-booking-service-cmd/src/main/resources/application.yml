@@ -12,11 +12,11 @@ spring:
         output:
           destination: bookings-events
           producer.headerMode: headers
-          contentType: application/json
+          contentType: application/*+avro
         input:
           destination: bookings-events
           consumer.headerMode: headers
-          contentType: application/json
+          contentType: application/*+avro
           group: bookings-events-group
       kafka:
         streams:
@@ -29,9 +29,18 @@ spring:
         binder:
           brokers: localhost:9092
           headers: event_type,kafka_messageKey
+      schema:
+        avro:
+          dynamicSchemaGenerationEnabled: true
+      schemaRegistryClient:
+        endpoint: http://localhost:8111
+        cached: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+
+
+
 
 

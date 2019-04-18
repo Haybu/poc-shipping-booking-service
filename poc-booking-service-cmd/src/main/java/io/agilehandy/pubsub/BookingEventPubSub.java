@@ -18,6 +18,7 @@
 package io.agilehandy.pubsub;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.agilehandy.common.api.events.BookingBaseEvent;
 import io.agilehandy.common.api.events.BookingEvent;
 import io.agilehandy.bookings.Booking;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +67,7 @@ public class BookingEventPubSub {
 
 	// Kafka KTable of aggregates snapshot
 	@StreamListener(BookingEventChannels.BOOKING_EVENTS_IN)
-	public void snapshot(KStream<String, BookingEvent> events)
+	public void snapshot(KStream<String, BookingBaseEvent> events)
 	{
 		Serde<Booking> BookingSerde = new JsonSerde<>( Booking.class, new ObjectMapper() );
 

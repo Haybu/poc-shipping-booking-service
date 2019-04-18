@@ -13,7 +13,13 @@ spring:
           destination: bookings-events
           consumer.headerMode: headers
           group: cargo-location-summary
-          content-type: application/json
+          content-type: application/*+avro
       kafka:
         binder:
           headers: event_type,kafka_messageKey
+      schema:
+        avro:
+          dynamicSchemaGenerationEnabled: true
+      schemaRegistryClient:
+        endpoint: http://localhost:8111
+        cached: true
